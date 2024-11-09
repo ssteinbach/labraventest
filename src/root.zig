@@ -3,7 +3,7 @@ const testing = std.testing;
 
 const labraven_modes = @cImport(
     {
-        @cInclude("Modes.hpp");
+        @cInclude("LabActivity.h");
     }
 );
 
