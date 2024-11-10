@@ -15,34 +15,41 @@ export fn make_activity() labraven_modes.LabActivity
         .Update = MyActivity.Update,
         .Render = MyActivity.Render,
         .RunUI = MyActivity.RunUI,
+        .name = ma.name,
     };
 
     return result;
 }
 
-var MyActivity = struct {
+const name : [*:0]const u8 = "global";
+
+var ma = MyActivity{
+    .name = name,
+};
+
+const MyActivity = struct {
     export fn Activate(
-        self: *anyopaque,
+        self: ?*anyopaque,
     ) void 
     {
-        const actual : MyActivity = @ptrCast(self);
+        const actual : *MyActivity = @alignCast(@ptrCast(self));
 
         actual.active = true;
     }
     export fn Deactivate(
-        self: *anyopaque,
+        self: ?*anyopaque,
     ) void 
     {
-        const actual : MyActivity = @ptrCast(self);
+        const actual : *MyActivity = @alignCast(@ptrCast(self));
 
         actual.active = false;
     }
 
     export fn Update(
-        self: *anyopaque,
+        self: ?*anyopaque,
     ) void 
     {
-        const actual : MyActivity = @ptrCast(self);
+        const actual : *MyActivity = @alignCast(@ptrCast(self));
 
         actual.update_count += 1;
 
@@ -50,11 +57,11 @@ var MyActivity = struct {
     }
 
     export fn Render(
-        self: *anyopaque,
-        _: *const labraven_modes.LabViewInteraction,
+        self: ?*anyopaque,
+        _: [*c]const labraven_modes.LabViewInteraction,
     ) void 
     {
-        const actual : MyActivity = @ptrCast(self);
+        const actual : *MyActivity = @alignCast(@ptrCast(self));
 
         actual.render_count += 1;
 
@@ -62,29 +69,29 @@ var MyActivity = struct {
     }
 
     export fn RunUI(
-        _: *anyopaque,
-        _: *const labraven_modes.LabViewInteraction,
+        _: ?*anyopaque,
+        _: [*c]const labraven_modes.LabViewInteraction,
     ) void 
     {
         std.debug.print("runui!\n", .{});
     }
 
     export fn Menu(
-        _: *anyopaque,
+        _: ?*anyopaque,
     ) void 
     {
         std.debug.print("menu!\n", .{});
     }
 
     export fn ToolBar(
-        _: *anyopaque,
+        _: ?*anyopaque,
     ) void 
     {
         std.debug.print("ToolBar!\n", .{});
     }
 
     export fn ViewportHoverBid(
-        _: *anyopaque,
+        _: ?*anyopaque,
         _: *const labraven_modes.LabViewInteraction
     ) c_int   
     {
@@ -94,7 +101,7 @@ var MyActivity = struct {
     }
 
     export fn ViewportHovering(
-        _: *anyopaque,
+        _: ?*anyopaque,
         _: *const labraven_modes.LabViewInteraction
     ) void  
     {
@@ -102,7 +109,7 @@ var MyActivity = struct {
     }
 
     export fn ViewportDragBid(
-        _: *anyopaque,
+        _: ?*anyopaque,
         _: *const labraven_modes.LabViewInteraction
     ) c_int   
     {
@@ -110,15 +117,15 @@ var MyActivity = struct {
         return 0;
     }
     export fn ViewportDragging(
-        _: *anyopaque,
-        _: *const labraven_modes.LabViewInteraction
+        _: ?*anyopaque,
+        _: [*c]const labraven_modes.LabViewInteraction
     ) void  
     {
         std.debug.print("ViewportDragging!\n", .{});
     }
 
-    name: [:0]const c_char,
-    active: bool,
+    name: [*:0]const u8,
+    active: bool = false,
 
     update_count : usize=0,
     render_count : usize=0,

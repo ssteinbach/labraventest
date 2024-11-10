@@ -8,23 +8,26 @@ typedef struct LabViewDimensions {
 
 typedef struct LabViewInteraction {
     LabViewDimensions view;
-    float x = 0, y = 0, dt = 0;
-    bool start = false, end = false;  // start and end of a drag
+    // = 0
+    float x, y , dt;
+    // false
+    bool start, end;  // start and end of a drag
 } LabViewInteraction;
 
 // Define ModeActivities in a C-compatible way
 typedef struct LabActivity {
-    void (*Activate)(void*) = nullptr;
-    void (*Deactivate)(void*) = nullptr;
-    void (*Update)(void*) = nullptr;
-    void (*Render)(void*, const LabViewInteraction*) = nullptr;
-    void (*RunUI)(void*, const LabViewInteraction*) = nullptr;
-    void (*Menu)(void*) = nullptr;
-    void (*ToolBar)(void*) = nullptr;
-    int  (*ViewportHoverBid)(void*, const LabViewInteraction*) = nullptr;
-    void (*ViewportHovering)(void*, const LabViewInteraction*) = nullptr;
-    int  (*ViewportDragBid)(void*, const LabViewInteraction*) = nullptr;
-    void (*ViewportDragging)(void*, const LabViewInteraction*) = nullptr;
-    const char* name = nullptr; // string is not owned by the activity
-    bool active = false;
+    // nullptr
+    void (*Activate)(void*) ;
+    void (*Deactivate)(void*) ;
+    void (*Update)(void*) ;
+    void (*Render)(void*, const LabViewInteraction*) ;
+    void (*RunUI)(void*, const LabViewInteraction*) ;
+    void (*Menu)(void*) ;
+    void (*ToolBar)(void*) ;
+    int  (*ViewportHoverBid)(void*, const LabViewInteraction*) ;
+    void (*ViewportHovering)(void*, const LabViewInteraction*) ;
+    int  (*ViewportDragBid)(void*, const LabViewInteraction*) ;
+    void (*ViewportDragging)(void*, const LabViewInteraction*) ;
+    const char* name ; // string is not owned by the activity
+    bool active ;
 } LabActivity;
