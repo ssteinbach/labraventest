@@ -21,10 +21,8 @@ export fn make_activity() labraven_modes.LabActivity
     return result;
 }
 
-const name : [*:0]const u8 = "global";
-
 var ma = MyActivity{
-    .name = name,
+    .name = "global",
 };
 
 const MyActivity = struct {
